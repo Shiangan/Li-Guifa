@@ -280,7 +280,7 @@
     }
 
     function getFullInfo(){
-        return `🕊️【追思奠禮 ‧ 李府貴發先生】\n\n享壽 81 歲\n\n豎靈/安靈：宜蘭福園 停柩室 [ 103 ]\n奠禮日期：116年01月16日 (五)\n奠禮地點：宜蘭員山福園 [ 801 ] 禮廳\n\n家奠禮：10:10\n公奠禮：11:00\n（家屬懇辭奠儀）\n\n📍 導航與完整資訊：\n${window.location.href}`;
+        return `🕊️【追思奠禮 ‧ 李府貴發先生】\n\n享壽 81 歲\n\n豎靈/安靈：宜蘭福園 停柩室 [ 103 ]\n奠禮日期：116年01月16日 (五)\n奠禮地點：宜蘭員山福園 [ 801 ] 禮廳\n\n家奠禮：10:10\n公奠禮：11:00\n（懇辭奠儀）\n\n📍 完整資訊：\n${window.location.href}`;
     }
 
     function copy(){
@@ -294,7 +294,7 @@
     function share(){
         const msg = getFullInfo();
         if(navigator.share){
-            navigator.share({ title: '李府貴發先生 追思錄', text: msg, url: window.location.href });
+            navigator.share({ title: '李府貴發先生 追思', text: msg, url: window.location.href });
         } else {
             window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(msg)}`;
         }
