@@ -30,9 +30,13 @@
             --max-w: 480px;
         }
 
-        /* 基礎設置 */
+        /* 基礎設置 - 加入防止字體自動縮放 */
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
-        html, body { 
+        html { 
+            -webkit-text-size-adjust: 100%; 
+            text-size-adjust: 100%; 
+        }
+        body { 
             width: 100%; max-width: 100vw; overflow-x: hidden; 
             background-color: var(--paper); color: var(--ink); 
             font-family: 'Noto Serif TC', serif; line-height: 1.8; 
@@ -67,9 +71,11 @@
         .date-hero { font-size: clamp(70px, 18vw, 85px); font-weight: 900; line-height: 1; text-align: center; color: var(--ink); }
         .date-sub { text-align: center; font-size: 14px; letter-spacing: 2px; color: var(--sub-ink); margin-top: 5px; }
         
-        .time-grid { display: flex; justify-content: space-around; padding-top: 30px; border-top: 1px dashed rgba(180, 151, 122, 0.2); margin-top: 30px; }
-        .time-item b { font-size: 40px; font-weight: 600; color: var(--gold); }
-        .time-item span { font-size: 11px; display: block; color: var(--sub-ink); letter-spacing: 2px; }
+        /* 重新設計的時間軸樣式 */
+        .time-timeline { margin-top: 35px; padding-top: 25px; border-top: 1px dashed rgba(180, 151, 122, 0.2); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .time-box { display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .time-tag { font-size: 13px; color: var(--sub-ink); letter-spacing: 3px; font-weight: 600; text-align: right; width: 60px; }
+        .time-main { font-size: 34px; font-weight: 700; color: var(--gold); font-family: serif; border-left: 1.5px solid var(--gold); padding-left: 15px; min-width: 120px; }
 
         .notice-card { background: rgba(180, 151, 122, 0.05); border: 1px solid rgba(180, 151, 122, 0.15); border-radius: 8px; padding: 25px 20px; margin-top: 30px; }
         .notice-item { font-size: 13px; color: var(--sub-ink); margin-bottom: 12px; display: flex; align-items: flex-start; line-height: 1.6; text-align: justify; }
@@ -113,10 +119,10 @@
     <div class="header-top">
         <img src="image/logo.png" class="top-logo">
         <div class="top-action-bar">
-            <a href="javascript:void(0)" class="top-btn" onclick="copyText()">
+            <a href="javascript:void(0)" class="top-btn" onclick="copyText(true)">
                 <img src="https://img.icons8.com/material-outlined/24/777777/copy.png"> 複製資訊
             </a>
-            <a href="https://line.me/R/msg/text/?【追思】李貴發先生 奠禮資訊%0ahttps://24hour.台灣/Li-Guifa" class="top-btn">
+            <a href="javascript:void(0)" class="top-btn" onclick="shareLine()">
                 <img src="https://img.icons8.com/material-rounded/24/06C755/line-me.png"> 分享親友
             </a>
         </div>
@@ -135,9 +141,9 @@
                 <p style="font-size: 15px; color: var(--sub-ink); line-height: 2.8; letter-spacing: 1.8px; padding: 0 15px;">
                     我們最敬愛的 <span style="font-weight: 700; color: var(--ink); font-size: 18px;">李貴發 先生</span><br>
                     於 <span style="color: var(--ink); font-weight: 600;">115 年 01 月 01 日 (卯時)</span>，<br>
-                    在親友的陪伴與思念中，<br>
+                    在家人們的陪伴與思念中，<br>
                     圓滿塵世旅程，安詳化作星辰。<br>
-                    他留下的溫暖與教誨，將永遠照亮我們。<br><br>
+                    留下的溫暖與教誨，將永遠照亮我們。<br><br>
                     謹擇於<br>
                     <span style="color: var(--ink); font-weight: 600;">115 年 01 月 16 日 (星期五)</span>，<br>
                     於<span style="color: var(--ink); font-weight: 600;">宜蘭員山福園 ［ 801 ］禮廳</span><br>
@@ -168,9 +174,15 @@
                 </div>
             </div>
             
-            <div class="time-grid">
-                <div class="time-item"><span>家奠禮</span><b> 上午 10:00 </b></div>
-                <div class="time-item"><span>公奠禮</span><b> 上午 10:50 </b></div>
+            <div class="time-timeline">
+                <div class="time-box">
+                    <span class="time-tag">家奠禮</span>
+                    <span class="time-main">10:00</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-tag">公奠禮</span>
+                    <span class="time-main">10:50</span>
+                </div>
             </div>
 
             <div class="notice-card">
@@ -180,7 +192,7 @@
                 <div class="notice-item">若因宗教信仰不持香，請與工作人員示意即可。</div>
             </div>
 
-            <a href="#" class="btn-action" onclick="addCal()">加入手機行事曆提醒</a>
+            <a href="javascript:void(0)" class="btn-action" onclick="addCal()">加入手機行事曆提醒</a>
         </section>
 
         <section class="reveal">
@@ -194,7 +206,7 @@
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
                 <img src="image/宜蘭員山福園地圖.png" style="width:100%; max-width:300px;" onclick="zoom(this.src)">
             </div>
-            <a href="https://maps.app.goo.gl/45NKUwd6w5tuuFe39?g_st=ic" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭員山福園" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
         </section>
 
         <section class="reveal" style="text-align: center;">
@@ -255,6 +267,19 @@
 <div id="lightbox" onclick="this.style.display='none'"><img id="lbi"></div>
 
 <script>
+    // 預先定義奠禮資訊字串
+    const memorialInfo = `☘️【追思奠禮 ‧ 李貴發 先生】
+
+安靈地點：宜蘭員山福園 停柩室［ 103 ］
+奠禮日期：115年01月16日(五)
+奠禮會場：宜蘭員山福園 ［ 801 ］禮廳
+家奠禮：上午 10:00
+公奠禮：上午 10:50
+地址：宜蘭縣員山鄉蜊埤路27號
+
+點擊連結查看全文：
+https://24hour.台灣/Li-Guifa`;
+
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
@@ -272,21 +297,27 @@
     function zoom(src) { document.getElementById('lbi').src = src; document.getElementById('lightbox').style.display = 'flex'; }
     function toggleF() { const g = document.getElementById('flowerG'); g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; }
     
-    function copyText() {
-        const info = "☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：2026年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n家奠禮：上午10:00\n公奠禮：上午10:50";
+    // 複製資訊函數
+    function copyText(showAlert = true) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(info).then(() => {
-                alert("奠禮資訊已複製到剪貼簿");
+            navigator.clipboard.writeText(memorialInfo).then(() => {
+                if(showAlert) alert("奠禮資訊已複製到剪貼簿");
             });
         } else {
             const textArea = document.createElement("textarea");
-            textArea.value = info;
+            textArea.value = memorialInfo;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            alert("奠禮資訊已複製到剪貼簿");
+            if(showAlert) alert("奠禮資訊已複製到剪貼簿");
         }
+    }
+
+    // 修復後的 LINE 分享函數
+    function shareLine() {
+        const encodedText = encodeURIComponent(memorialInfo);
+        window.location.href = `https://line.me/R/msg/text/?${encodedText}`;
     }
 
     function addCal() { 
