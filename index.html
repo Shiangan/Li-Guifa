@@ -30,17 +30,17 @@
             --max-w: 480px;
         }
 
-        /* 基礎設置 - 深度鎖定 iOS 字體 */
+        /* 2. CSS 深度鎖定：強制禁止字體自動縮放 */
         * { 
             box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
             margin: 0; 
             padding: 0; 
-            /* 針對所有元素禁止字體自動縮放 */
-            -webkit-text-size-adjust: none;
-            -moz-text-size-adjust: none;
-            -ms-text-size-adjust: none;
-            text-size-adjust: none;
+            /* 強制所有元素禁止 Safari 自動調整字體大小 */
+            -webkit-text-size-adjust: none !important;
+            -moz-text-size-adjust: none !important;
+            -ms-text-size-adjust: none !important;
+            text-size-adjust: none !important;
         }
 
         html, body { 
@@ -51,8 +51,9 @@
             color: var(--ink); 
             font-family: 'Noto Serif TC', serif; 
             line-height: 1.8;
-            /* 防止 iOS 彈性滾動造成的黑邊或白邊 */
             position: relative;
+            /* 禁止雙擊縮放的 CSS 行為 */
+            touch-action: manipulation; 
         }
 
         .app-wrapper { 
@@ -88,7 +89,6 @@
         .date-hero { font-size: clamp(70px, 18vw, 85px); font-weight: 900; line-height: 1; text-align: center; color: var(--ink); }
         .date-sub { text-align: center; font-size: 14px; letter-spacing: 2px; color: var(--sub-ink); margin-top: 5px; }
         
-        /* 精緻時間軸 */
         .time-timeline { margin-top: 35px; padding-top: 25px; border-top: 1px dashed rgba(180, 151, 122, 0.2); display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .time-box { display: flex; align-items: center; justify-content: center; gap: 15px; }
         .time-tag { font-size: 13px; color: var(--sub-ink); letter-spacing: 3px; font-weight: 600; text-align: right; width: 60px; }
@@ -284,6 +284,24 @@
 <div id="lightbox" onclick="this.style.display='none'"><img id="lbi"></div>
 
 <script>
+    // 3. JavaScript 深度攔截：防止縮放行為
+    
+    // 禁止 iOS 雙指縮放
+    document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+    });
+
+    // 禁止雙擊縮放 (Double Tap)
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // 奠禮資訊字串
     const memorialInfo = `☘️【追思奠禮 ‧ 李貴發 先生】
 
 安靈地點：宜蘭員山福園 停柩室［ 103 ］
@@ -296,6 +314,7 @@
 點擊連結查看全文：
 https://24hour.台灣/Li-Guifa`;
 
+    // 滾動顯示動畫
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
@@ -306,27 +325,23 @@ https://24hour.台灣/Li-Guifa`;
     }), {threshold: 0.1});
     document.querySelectorAll('section, .calligraphy-area').forEach(s => obs.observe(s));
 
+    // 音樂自動播放處理
     const bgm = document.getElementById('bgm');
     const startM = () => { if(bgm.paused){ bgm.volume=0.3; bgm.play().catch(()=>{}); } };
     ['click','touchstart','scroll'].forEach(e => document.addEventListener(e, startM, {once:true}));
 
+    // 介面功能
     function zoom(src) { document.getElementById('lbi').src = src; document.getElementById('lightbox').style.display = 'flex'; }
     function toggleF() { const g = document.getElementById('flowerG'); g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; }
     
     function copyText(showAlert = true) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(memorialInfo).then(() => {
-                if(showAlert) alert("奠禮資訊已複製到剪貼簿");
-            });
-        } else {
-            const textArea = document.createElement("textarea");
-            textArea.value = memorialInfo;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            if(showAlert) alert("奠禮資訊已複製到剪貼簿");
-        }
+        const textArea = document.createElement("textarea");
+        textArea.value = memorialInfo;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if(showAlert) alert("奠禮資訊已複製到剪貼簿");
     }
 
     function shareLine() {
