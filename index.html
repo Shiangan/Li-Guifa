@@ -11,7 +11,8 @@
         :root { 
             --gold: #b08d57; --gold-shimmer: #eaddca; --gold-deep: #8e6d3d;
             --rich-cocoa: #3d3935; --paper: #fdfdfb; --ink: #1a1a1a;
-            --glass: rgba(255, 255, 255, 0.4);
+            --glass-white: rgba(255, 255, 255, 0.45);
+            --glass-dark: rgba(176, 141, 87, 0.08);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -31,7 +32,7 @@
             padding-bottom: env(safe-area-inset-bottom);
         }
 
-        /* 邊框裝飾 */
+        /* 框架裝飾 */
         .frame-border { position: absolute; inset: 12px; border: 1px solid rgba(176,141,87,0.15); pointer-events: none; z-index: 50; }
         .corner { position: absolute; width: 35px; height: 35px; border: 2.5px solid var(--gold); z-index: 51; opacity: 0.6; }
         .tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
@@ -57,13 +58,13 @@
         .page.active { opacity: 1; transform: translate3d(0, 0, 0); pointer-events: auto; z-index: 10; }
         .page::-webkit-scrollbar { display: none; }
 
-        /* 思念區塊 - 去白底質感化 */
+        /* 區塊樣式 - 移除白底 */
         .calligraphy { font-family: 'Ma Shan Zheng', cursive; font-size: clamp(48px, 12vw, 60px); color: var(--gold); text-align: center; margin-bottom: 10px; }
-        .art-card { border: 1px solid var(--gold-shimmer); padding: 6px; background: rgba(255,255,255,0.5); margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); cursor: pointer; border-radius: 2px; }
+        .art-card { border: 1px solid var(--gold-shimmer); padding: 6px; background: rgba(255,255,255,0.4); margin-bottom: 30px; box-shadow: 0 12px 30px rgba(0,0,0,0.06); cursor: pointer; border-radius: 2px; }
         .art-card img { width: 100%; display: block; }
         
-        .biography-box { border: 1px solid var(--gold-shimmer); padding: 25px 20px; background: var(--glass); backdrop-filter: blur(5px); margin-bottom: 35px; border-radius: 4px; position: relative; }
-        .biography-box::before { content: "MEMORIAM"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--paper); padding: 0 15px; font-size: 10px; color: var(--gold); letter-spacing: 5px; }
+        .biography-box { border: 1px solid var(--gold-shimmer); padding: 25px 20px; background: var(--glass-white); backdrop-filter: blur(8px); margin-bottom: 35px; border-radius: 4px; position: relative; }
+        .biography-box::before { content: "MEMORIAM"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #fdfdfb; padding: 0 15px; font-size: 10px; color: var(--gold); letter-spacing: 5px; }
 
         .p-text { font-size: 17px; line-height: 2.2; color: #444; text-align: justify; letter-spacing: 0.5px; }
         .p-text b { color: var(--rich-cocoa); font-weight: 900; }
@@ -72,7 +73,7 @@
         .divider span { font-family: 'Cinzel'; font-size: 10px; color: var(--gold-deep); letter-spacing: 5px; font-weight: 900; }
         .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-shimmer), transparent); }
 
-        /* 奠禮資訊區塊 */
+        /* 奠禮資訊 */
         .info-cell { text-align: center; margin-bottom: 35px; }
         .info-tag { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); letter-spacing: 8px; margin-bottom: 8px; text-transform: uppercase; }
         .info-val { font-size: 24px; color: var(--ink); font-weight: 900; }
@@ -84,31 +85,31 @@
         .btn-luxe { border: 1px solid var(--gold); padding: 18px; text-align: center; color: var(--ink); font-weight: 900; letter-spacing: 4px; font-size: 14px; background: transparent; margin-bottom: 15px; display: block; text-decoration: none; border-radius: 4px; cursor: pointer; transition: 0.3s; }
         .btn-luxe:active { background: rgba(176,141,87,0.1); transform: scale(0.96); }
 
-        .notice-box { background: rgba(176,141,87,0.05); border: 1px solid var(--gold-shimmer); padding: 20px; border-radius: 4px; margin-bottom: 35px; }
+        .notice-box { background: var(--glass-dark); border: 1px solid var(--gold-shimmer); padding: 20px; border-radius: 4px; margin-bottom: 35px; }
         .notice-title { font-weight: 900; color: var(--gold-deep); font-size: 16px; margin-bottom: 12px; text-align: center; letter-spacing: 2px; }
 
-        /* 交通資訊 - 完整且去白底 */
-        .transport-box { margin-bottom: 35px; border-top: 1px solid rgba(176,141,87,0.2); padding-top: 30px; }
-        .transport-item { margin-bottom: 22px; padding: 0 10px; }
-        .transport-label { font-weight: 900; color: var(--ink); font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; }
+        /* 交通資訊不省略 */
+        .transport-box { margin-bottom: 35px; border-top: 1px solid rgba(176,141,87,0.15); padding-top: 30px; }
+        .transport-item { margin-bottom: 25px; }
+        .transport-label { font-weight: 900; color: var(--ink); font-size: 16px; margin-bottom: 10px; display: flex; align-items: center; }
         .transport-label::before { content: ""; width: 4px; height: 16px; background: var(--gold); margin-right: 12px; border-radius: 2px; }
-        .transport-text { font-size: 15px; color: #666; line-height: 1.7; padding-left: 16px; text-align: justify; }
+        .transport-text { font-size: 15px; color: #555; line-height: 1.8; padding-left: 16px; text-align: justify; }
 
-        /* 花籃區塊 */
-        .f-container { border: 1px solid var(--gold-shimmer); background: rgba(255,255,255,0.3); margin-top: 30px; border-radius: 4px; overflow: hidden; }
+        /* 花禮與 LINE 區塊 - 去白底 */
+        .f-container { border: 1px solid var(--gold-shimmer); background: rgba(255,255,255,0.2); margin-top: 30px; border-radius: 4px; overflow: hidden; }
         .f-head { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(176,141,87,0.05); cursor: pointer; }
         .f-grid { max-height: 0; opacity: 0; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow: hidden; }
         .f-container.open .f-grid { max-height: 2000px; opacity: 1; padding: 15px 12px; border-top: 1px solid rgba(176,141,87,0.1); }
-        .f-item { border: 1px solid rgba(176,141,87,0.1); background: #fff; text-align: center; padding: 5px; border-radius: 2px; }
+        .f-item { border: 1px solid #eee; background: #fff; text-align: center; padding: 5px; border-radius: 2px; }
         .f-item img { width: 100%; display: block; }
         .f-tag { background: var(--rich-cocoa); color: #fff; font-size: 11px; padding: 6px 0; font-family: 'Montserrat'; font-weight: 700; margin-top: 5px; }
-        
-        /* 祥安生命區塊 - 去白底 */
-        .company-section { margin-top: 50px; text-align: center; padding: 20px 0; }
-        .company-name { font-size: 22px; font-weight: 900; color: var(--ink); letter-spacing: 2px; margin-bottom: 5px; }
-        .company-contact { font-size: 18px; color: var(--gold-deep); font-weight: 700; margin-bottom: 25px; }
-        .line-btn { display: inline-block; background: var(--rich-cocoa); color: var(--gold-shimmer); padding: 16px 45px; text-decoration: none; border-radius: 50px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: 0.3s; }
 
+        .company-section { margin-top: 50px; text-align: center; padding: 20px 0; }
+        .company-name { font-size: 22px; font-weight: 900; color: var(--ink); letter-spacing: 2px; margin-bottom: 8px; }
+        .company-contact { font-size: 18px; color: var(--gold-deep); font-weight: 700; margin-bottom: 25px; }
+        .line-btn { display: inline-block; background: var(--rich-cocoa); color: var(--gold-shimmer); padding: 16px 45px; text-decoration: none; border-radius: 50px; font-weight: 900; letter-spacing: 3px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; }
+
+        /* 導覽列 */
         nav {
             position: absolute; bottom: calc(env(safe-area-inset-bottom) + 20px); left: 20px; right: 20px; height: 75px;
             background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); border-radius: 40px; display: flex; align-items: center; z-index: 1000;
@@ -117,9 +118,8 @@
         .n-link { flex: 1; text-align: center; text-decoration: none; color: #bbb; font-size: 14px; font-weight: 900; letter-spacing: 1px; }
         .n-link.active { color: var(--gold-deep); font-size: 17px; }
 
-        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 30px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); }
-        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; display: none; overflow: auto; }
-        #l-img { max-width: 100%; max-height: 85vh; transition: 0.3s; display: block; margin: auto; }
+        #toast { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(11,10,9,0.9); color: #fff; padding: 15px 35px; border-radius: 50px; z-index: 9999; display: none; border: 1px solid var(--gold); white-space: nowrap; }
+        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; display: none; }
     </style>
 </head>
 <body onclick="playAmbient()">
@@ -160,7 +160,7 @@
 
         <section id="p2" class="page">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-                <div class="btn-luxe" onclick="copy()">複製奠禮資訊</div>
+                <div class="btn-luxe" onclick="copy()">複製完整奠禮資訊</div>
                 <div class="btn-luxe" onclick="share()">分享予親友</div>
             </div>
             
@@ -189,7 +189,6 @@
                 <ul style="list-style: none; font-size: 15px; color: #666; line-height: 1.8;">
                     <li style="margin-bottom: 8px; display: flex; align-items: flex-start;"><span style="color:var(--gold); margin-right:10px;">✦</span>會場備有淨水，供親友洗塵淨心使用。</li>
                     <li style="margin-bottom: 8px; display: flex; align-items: flex-start;"><span style="color:var(--gold); margin-right:10px;">✦</span>會場內請保持肅靜，並將手機轉為靜音。</li>
-                    <li style="margin-bottom: 8px; display: flex; align-items: flex-start;"><span style="color:var(--gold); margin-right:10px;">✦</span>因家屬懇辭奠儀，誠摯邀請您以祝福傳達心意。</li>
                 </ul>
             </div>
 
@@ -198,18 +197,18 @@
                 <div class="transport-item">
                     <div class="transport-label">自行開車</div>
                     <div class="transport-text">
-                        請導航至「宜蘭員山福園」。經由國道五號下宜蘭交流道，轉台七線（員山路）行駛，銜接溫泉路後依指標進入。園內提供親友專用停車區。
+                        請導航至「宜蘭員山福園」。國道五號宜蘭交流道下，往員山方向銜接台七線（員山路），左轉進入溫泉路，依指標行駛即可抵達。
                     </div>
                 </div>
                 <div class="transport-item">
-                    <div class="transport-label">搭乘大眾運輸</div>
+                    <div class="transport-label">公車交通</div>
                     <div class="transport-text">
-                        可於宜蘭火車站或宜蘭轉運站，轉乘「宜蘭勁好行」公車【752】線，於「福園站」下車即可步行抵達會場。
+                        可於宜蘭轉運站或宜蘭火車站前，搭乘「宜蘭勁好行」公車【752】路線，於「福園站」下車即可步行抵達會場。
                     </div>
                 </div>
             </div>
             
-            <a href="https://maps.app.goo.gl/3wGueG8Mh2w4J5Yn6" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">開啟 Google 地圖導引</a>
+            <a href="https://maps.app.goo.gl/Yp9H" target="_blank" class="btn-luxe" style="background:var(--rich-cocoa); color:#fff; border:none; letter-spacing:8px;">開啟 Google 地圖導引</a>
         </section>
 
         <section id="p3" class="page">
@@ -259,8 +258,8 @@
 <div id="toast">資訊已成功複製</div>
 
 <div id="lightbox" onclick="closePop()">
-    <div id="l-img-wrapper" style="display:flex; height:100%; align-items:center; justify-content:center;">
-        <img id="l-img" src="">
+    <div style="display:flex; height:100%; align-items:center; justify-content:center; padding:20px;">
+        <img id="l-img" src="" style="max-width:100%; max-height:85vh; border: 4px solid #fff;">
     </div>
 </div>
 
@@ -278,19 +277,12 @@
     }
 
     function toggleFlowers() { document.getElementById('f-box').classList.toggle('open'); }
+    function Pop(s){ const img = document.getElementById('l-img'); img.src = s; document.getElementById('lightbox').style.display = 'block'; }
+    function closePop() { document.getElementById('lightbox').style.display = 'none'; }
 
-    function Pop(s){ 
-        const img = document.getElementById('l-img');
-        const box = document.getElementById('lightbox');
-        img.src = s; 
-        box.style.display = 'block'; 
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closePop() { document.getElementById('lightbox').style.display = 'none'; document.body.style.overflow = 'auto'; }
-
+    // 複製全資訊格式
     function getShareMsg() {
-        return `【追思奠禮 ‧ 李府貴發先生】\n\n享壽 81 歲\n奠禮日期：116年01月16日(五)\n奠禮會場：宜蘭員山福園 801禮廳\n（懇辭奠儀）\n\n線上追思網址：${window.location.href}`;
+        return `【追思奠禮 ‧ 李府貴發先生】\n\n享壽 81 歲\n安靈地點：宜蘭福園 停柩室 [ 103 ]\n奠禮日期：116年01月16日(五)\n奠禮會場：宜蘭員山福園 [ 801 ] 禮廳\n家奠禮：10:10\n公奠禮：11:00\n（懇辭奠儀）\n\n線上追思網址：${window.location.href}`;
     }
 
     function copy() {
@@ -301,6 +293,7 @@
         document.execCommand('copy');
         document.body.removeChild(ta);
         const t = document.getElementById('toast');
+        t.innerText = "奠禮全資訊已成功複製";
         t.style.display = 'block';
         setTimeout(() => t.style.display = 'none', 2000);
     }
