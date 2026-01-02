@@ -12,11 +12,9 @@
     <meta property="og:type" content="website">
     
     <title>永恆思念：李貴發 先生</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;900&display=swap" rel="stylesheet">
     
     <style>
-        /* 載入毛筆書法字體 */
         @font-face {
             font-family: 'ZF-Font';
             src: url('Zf-Font.ttf') format('truetype');
@@ -31,13 +29,11 @@
             --max-w: 480px;
         }
 
-        /* [關鍵防禦] 強制禁止瀏覽器自動調整文字大小 (針對高階智慧手機系統) */
         * { 
             box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
             margin: 0; padding: 0; 
             -webkit-text-size-adjust: none !important;
-            -moz-text-size-adjust: none !important;
             text-size-adjust: none !important;
         }
 
@@ -49,11 +45,8 @@
             color: var(--ink); 
             font-family: 'Noto Serif TC', serif; 
             line-height: 1.8;
-            position: relative;
-            /* 觸控動作鎖定：僅允許單指捲動，禁止縮放手勢 */
             touch-action: pan-y;
             -webkit-touch-callout: none;
-            -webkit-user-select: none;
         }
 
         .app-wrapper { 
@@ -62,32 +55,26 @@
             margin: 0 auto; 
             position: relative; 
             background-color: var(--paper); 
-            box-shadow: 0 0 30px rgba(0,0,0,0.02);
             min-height: 100vh;
         }
 
-        /* 背景裝飾水印 */
         .bg-watermark { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); font-size: 70px !important; font-weight: 300; font-family: serif; color: rgba(180, 151, 122, 0.04); letter-spacing: 15px; z-index: 0; pointer-events: none; white-space: nowrap; }
 
-        /* 頂部區域 */
         .header-top { text-align: center; padding: 45px 20px 20px; }
         .top-logo { width: 110px; opacity: 0.8; }
         .top-action-bar { display: flex; justify-content: center; gap: 12px; margin-top: 15px; }
         .top-btn { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 20px; font-size: 13px !important; font-weight: 600; text-decoration: none; border: 1px solid rgba(180, 151, 122, 0.3); background: #fff; color: var(--sub-ink); }
         .top-btn img { width: 16px; height: 16px; }
 
-        /* 標題與姓名 */
         header { padding: 20px 0; text-align: center; }
         .name-wrapper { font-size: 52px !important; font-weight: 900; letter-spacing: 0.25em; margin: 15px 0; }
 
-        /* 內容區段與動畫 */
         section { padding: 65px 22px; width: 100%; position: relative; z-index: 1; opacity: 0; transform: translateY(20px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
         section.visible { opacity: 1; transform: translateY(0); }
 
         .section-title { font-size: 15px !important; letter-spacing: 8px; color: var(--gold); font-weight: 700; margin-bottom: 35px; display: block; text-align: center; }
         .img-inner { display: block; max-width: 85%; margin: 0 auto; height: auto; cursor: pointer; border-radius: 2px; }
         
-        /* 奠禮詳情樣式 */
         .date-hero { font-size: 80px !important; font-weight: 900; line-height: 1; text-align: center; color: var(--ink); }
         .date-sub { text-align: center; font-size: 14px !important; letter-spacing: 2px; color: var(--sub-ink); margin-top: 5px; }
         
@@ -96,38 +83,33 @@
         .time-tag { font-size: 13px !important; color: var(--sub-ink); letter-spacing: 3px; font-weight: 600; text-align: right; width: 60px; }
         .time-main { font-size: 32px !important; font-weight: 700; color: var(--gold); border-left: 2px solid var(--gold); padding-left: 15px; min-width: 120px; line-height: 1; }
 
-        /* 注意事項 */
         .notice-card { background: rgba(180, 151, 122, 0.05); border: 1px solid rgba(180, 151, 122, 0.15); border-radius: 8px; padding: 25px 20px; margin-top: 30px; }
         .notice-item { font-size: 13px !important; color: var(--sub-ink); margin-bottom: 12px; display: flex; align-items: flex-start; line-height: 1.6; text-align: justify; }
         .notice-item::before { content: "‧"; color: var(--gold); font-weight: 900; margin-right: 8px; }
 
-        /* 花禮 Grid 調整 */
         .flower-grid { display: none; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 40px; padding: 0 5px; }
         .flower-item { text-align: center; background: #fff; padding: 10px; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .flower-item img { width: 100%; border-radius: 2px; margin-bottom: 8px; }
         .flower-name { font-size: 12px !important; font-weight: 600; }
         .flower-price { font-size: 11px !important; color: var(--gold); font-weight: 700; display: block; margin-top: 3px; }
 
-        /* [重點] 墨跡書法謝詞區 - 絕不省略 */
-        .calligraphy-area { padding: 80px 10px 120px; width: 100%; display: flex; justify-content: center; position: relative; z-index: 2; overflow: hidden; }
-        .ink-wrap { display: flex; flex-direction: row-reverse; justify-content: center; align-items: flex-start; width: 95%; max-width: 420px; height: 520px; margin: 0 auto; }
-        .ink-line { writing-mode: vertical-rl; font-family: 'ZF-Font', serif; font-size: 23px !important; letter-spacing: 8px; line-height: 1.9; opacity: 0; filter: blur(12px); white-space: nowrap; margin: 0 4px; }
-        .ink-last-line { margin-top: 140px !important; margin-right: 15px !important; color: var(--ink); }
+        /* [更新] 書法謝詞區：加強高度並統整多行內容 */
+        .calligraphy-area { padding: 100px 10px 150px; width: 100%; display: flex; justify-content: center; position: relative; z-index: 2; overflow: hidden; }
+        .ink-wrap { display: flex; flex-direction: row-reverse; justify-content: center; align-items: flex-start; width: 95%; max-width: 420px; height: 620px; margin: 0 auto; }
+        .ink-line { writing-mode: vertical-rl; font-family: 'ZF-Font', serif; font-size: 22px !important; letter-spacing: 6px; line-height: 2.1; opacity: 0; filter: blur(12px); white-space: nowrap; margin: 0 6px; }
+        .ink-last-line { margin-top: 160px !important; margin-right: 20px !important; color: var(--ink); font-size: 20px !important; }
         .ink-anim { animation: inkFadeIn 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         @keyframes inkFadeIn { 0% { opacity: 0; filter: blur(12px); transform: translateY(-10px); } 100% { opacity: 1; filter: blur(0); transform: translateY(0); } }
 
-        /* 聯繫窗口 */
         .contact-box { background: rgba(180, 151, 122, 0.06); padding: 30px 20px; border-radius: 12px; margin: 0 22px 30px; border: 1px solid rgba(180, 151, 122, 0.1); }
         .contact-btns { display: flex; gap: 12px; margin-top: 15px; }
         .btn-call { flex: 1; background: var(--gold); color: #fff !important; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 14px !important; font-weight: 600; text-align: center; }
         .btn-line { flex: 1; background: #06C755; color: #fff !important; text-decoration: none; padding: 14px; border-radius: 8px; font-size: 14px !important; font-weight: 600; text-align: center; }
         .btn-action { display: block; width: 100%; padding: 18px; border: 1px solid var(--gold); color: var(--gold); text-align: center; text-decoration: none; font-size: 13px !important; letter-spacing: 4px; font-weight: 700; margin-top: 30px; }
         
-        /* 懸浮按鈕 */
         .float-nav { position: fixed; bottom: 35px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
         .float-nav img { width: 56px; height: auto; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15)); }
         
-        /* 燈箱 */
         #lightbox { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(249,247,242,0.98); display:none; justify-content:center; align-items:center; z-index:10000; }
         #lightbox img { max-width: 92%; max-height: 85%; object-fit: contain; }
         
@@ -138,7 +120,7 @@
 
 <audio id="bgm" loop><source src="Misson Part 1.mp3" type="audio/mp3"></audio>
 
-<div class="app-wrapper" id="master-container">
+<div class="app-wrapper">
     <div class="bg-watermark">MEMORY</div>
 
     <div class="header-top">
@@ -200,8 +182,10 @@
             </div>
 
             <div class="notice-card">
-                <div class="notice-item">請著整齊、樸素以表尊敬與追思之意。</div>
-                <div class="notice-item">園區內請以「平安」代替「再見」。</div>
+                <div class="notice-item">請著整齊、樸素衣物出席，以表尊敬與追思之意。</div>
+                <div class="notice-item">園區內請保持莊重，並以「平安」代替「再見」。</div>
+                <div class="notice-item">因禮廳空間有限，建議提早到達會場入座。</div>
+                <div class="notice-item">現場懇辭花籃、奠儀，僅收受一份真誠的追思。</div>
             </div>
             <a href="javascript:void(0)" class="btn-action" onclick="addCal()">加入手機行事曆提醒</a>
         </section>
@@ -217,7 +201,7 @@
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
                 <img src="image/宜蘭員山福園地圖.png" style="width:100%; max-width:300px;" onclick="zoom(this.src)">
             </div>
-            <a href="https://maps.app.goo.gl/Yp6vR8z79" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
+            <a href="https://maps.app.goo.gl/3q2e4S7uXN9vS" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
         </section>
 
         <section class="reveal" style="text-align: center;">
@@ -238,7 +222,9 @@
                 <div class="ink-line">致 每一位溫暖的您</div>
                 <div class="ink-line">謝謝這段日子的關懷與陪伴</div>
                 <div class="ink-line">每一句問候 每一份情誼</div>
-                <div class="ink-line">這份真誠厚情 永誌於心</div>
+                <div class="ink-line">都在我們心中 化作最暖的光</div>
+                <div class="ink-line">這份真誠厚情 我們將永誌於心</div>
+                <div class="ink-line">願 每一位親友平安順心</div>
                 <div class="ink-line ink-last-line">家屬 <b>全體家眷</b> 叩謝</div>
             </div>
         </div>
@@ -268,26 +254,23 @@
 <div id="lightbox" onclick="this.style.display='none'"><img id="lbi"></div>
 
 <script>
-    /* 1. 物理層面禁止縮放：攔截多點觸控與快速點擊 */
     document.addEventListener('gesturestart', (e) => e.preventDefault());
     let lastT = 0;
     document.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastT <= 300) e.preventDefault(); // 禁止快速連點導致的縮放
+        if (now - lastT <= 300) e.preventDefault();
         lastT = now;
     }, false);
 
-    /* 2. 奠禮資訊內容（供複製與分享） */
     const mInfo = `☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n詳情參閱：https://24hour.台灣/Li-Guifa`;
 
-    /* 3. 滾動觀察器 (動態進場動畫) */
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
-            // 如果捲動到謝詞區，啟動書法墨跡動畫
             if(e.target.id === 'thanksSec') {
                 e.target.querySelectorAll('.ink-line').forEach((l, i) => {
-                    l.style.animationDelay = (i * 1.5 + 0.5) + 's';
+                    // 稍微縮短間隔讓多行文字出現更流暢
+                    l.style.animationDelay = (i * 1.2 + 0.3) + 's';
                     l.classList.add('ink-anim');
                 });
             }
@@ -295,12 +278,10 @@
     }), {threshold: 0.1});
     document.querySelectorAll('section, .calligraphy-area').forEach(s => obs.observe(s));
 
-    /* 4. 音樂啟動機制 (需使用者首次點擊) */
     const bgm = document.getElementById('bgm');
     const startB = () => { if(bgm.paused){ bgm.volume=0.3; bgm.play().catch(()=>{}); } };
     ['click','touchstart'].forEach(ev => document.addEventListener(ev, startB, {once:true}));
 
-    /* 5. 互動功能函式 */
     function zoom(s) { document.getElementById('lbi').src = s; document.getElementById('lightbox').style.display = 'flex'; }
     function toggleF() { const g = document.getElementById('flowerG'); g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; }
     
@@ -310,9 +291,7 @@
         alert("奠禮資訊已複製至剪貼簿");
     }
 
-    function shareLine() { 
-        window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(mInfo)}`; 
-    }
+    function shareLine() { window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(mInfo)}`; }
 
     function addCal() { 
         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('【追思】李貴發先生 奠禮')}&dates=20260116T100000/20260116T120000&location=${encodeURIComponent('宜蘭員山福園')}`); 
