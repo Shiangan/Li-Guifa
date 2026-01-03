@@ -29,12 +29,14 @@
             --max-w: 480px;
         }
 
+        /* 核心鎖定：強制禁止瀏覽器自動縮放文字 */
         * { 
             box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
             margin: 0; padding: 0; 
-            -webkit-text-size-adjust: none !important;
-            text-size-adjust: none !important;
+            -webkit-text-size-adjust: 100% !important;
+            -moz-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
         }
 
         html, body { 
@@ -47,6 +49,8 @@
             line-height: 1.8;
             touch-action: pan-y;
             -webkit-touch-callout: none;
+            /* 二次鎖定 */
+            -webkit-text-size-adjust: 100%;
         }
 
         .app-wrapper { 
@@ -93,7 +97,6 @@
         .flower-name { font-size: 12px !important; font-weight: 600; }
         .flower-price { font-size: 11px !important; color: var(--gold); font-weight: 700; display: block; margin-top: 3px; }
 
-        /* [更新] 書法謝詞區：加強高度並統整多行內容 */
         .calligraphy-area { padding: 100px 10px 150px; width: 100%; display: flex; justify-content: center; position: relative; z-index: 2; overflow: hidden; }
         .ink-wrap { display: flex; flex-direction: row-reverse; justify-content: center; align-items: flex-start; width: 95%; max-width: 420px; height: 620px; margin: 0 auto; }
         .ink-line { writing-mode: vertical-rl; font-family: 'ZF-Font', serif; font-size: 22px !important; letter-spacing: 6px; line-height: 2.1; opacity: 0; filter: blur(12px); white-space: nowrap; margin: 0 6px; }
@@ -136,7 +139,7 @@
     </div>
 
     <header>
-        <div style="font-size: 13px !important; letter-spacing: 8px; color: var(--gold); font-weight: 600;">1945 — 2026</div>
+        <div style="font-size: 12px !important; letter-spacing: 8px; color: var(--gold); font-weight: 600;">1945 — 2026</div>
         <div class="name-wrapper">李貴發 先生</div>
     </header>
 
@@ -163,7 +166,7 @@
             <span class="section-title">追思奠禮 ‧ 儀程詳情</span>
             <div class="date-hero">115.01.16</div>
             <div class="date-sub">西元 2026 年 ‧ 國曆一月十六日</div>
-            <div class="date-sub" style="font-size: 12px !important; opacity: 0.8;">( 農曆 乙巳年 十一月廿八日 ) 星期五</div>
+            <div class="date-sub" style="font-size: 11px !important; opacity: 0.8;">( 農曆 乙巳年 十一月廿八日 ) 星期五</div>
             
             <div style="margin-top:45px; text-align: center;">
                 <div style="margin-bottom:25px; padding: 18px; background: rgba(180, 151, 122, 0.04); border: 1px solid rgba(180, 151, 122, 0.15); border-radius: 6px;">
@@ -183,9 +186,9 @@
 
             <div class="notice-card">
                 <div class="notice-item">請著整齊、樸素衣物出席，以表尊敬與追思之意。</div>
-                <div class="notice-item">園區內請保持莊重，並以「平安」代替「再見」。</div>
-                <div class="notice-item">因禮廳空間有限，建議提早到達會場入座。</div>
-                <div class="notice-item">現場懇辭花籃、奠儀，僅收受一份真誠的追思。</div>
+                <div class="notice-item">園區內請勿說「再見」，以「平安」代替即可。</div>
+                <div class="notice-item">奠禮會場備有淨水，若有需要可以自行取用。</div>
+                <div class="notice-item">若因宗教信仰不方便持香，與工作人員示意即可。</div>
             </div>
             <a href="javascript:void(0)" class="btn-action" onclick="addCal()">加入手機行事曆提醒</a>
         </section>
@@ -201,7 +204,7 @@
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
                 <img src="image/宜蘭員山福園地圖.png" style="width:100%; max-width:300px;" onclick="zoom(this.src)">
             </div>
-            <a href="https://maps.app.goo.gl/3q2e4S7uXN9vS" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=宜蘭員山福園" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
         </section>
 
         <section class="reveal" style="text-align: center;">
@@ -254,6 +257,7 @@
 <div id="lightbox" onclick="this.style.display='none'"><img id="lbi"></div>
 
 <script>
+    // 徹底阻擋縮放手勢
     document.addEventListener('gesturestart', (e) => e.preventDefault());
     let lastT = 0;
     document.addEventListener('touchend', (e) => {
@@ -262,14 +266,13 @@
         lastT = now;
     }, false);
 
-    const mInfo = `☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n詳情參閱：https://24hour.台灣/Li-Guifa`;
+    const mInfo = `☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n家奠禮：上午10：00\n公奠禮：上午10：50\n詳情參閱：https://24hour.台灣/Li-Guifa`;
 
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
             if(e.target.id === 'thanksSec') {
                 e.target.querySelectorAll('.ink-line').forEach((l, i) => {
-                    // 稍微縮短間隔讓多行文字出現更流暢
                     l.style.animationDelay = (i * 1.2 + 0.3) + 's';
                     l.classList.add('ink-anim');
                 });
