@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     
     <meta property="og:title" content="【追思】李貴發 先生 雲端訃告">
     <meta property="og:description" content="感謝親友的陪伴與關懷，貴發先生已化作星辰，敬邀您陪伴走完最後一趟旅程。">
@@ -29,13 +29,11 @@
             --max-w: 480px;
         }
 
-        /* 核心鎖定：強制禁止瀏覽器自動縮放文字 */
         * { 
             box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
             margin: 0; padding: 0; 
             -webkit-text-size-adjust: 100% !important;
-            -moz-text-size-adjust: 100% !important;
             text-size-adjust: 100% !important;
         }
 
@@ -48,9 +46,6 @@
             font-family: 'Noto Serif TC', serif; 
             line-height: 1.8;
             touch-action: pan-y;
-            -webkit-touch-callout: none;
-            /* 二次鎖定 */
-            -webkit-text-size-adjust: 100%;
         }
 
         .app-wrapper { 
@@ -113,8 +108,23 @@
         .float-nav { position: fixed; bottom: 35px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
         .float-nav img { width: 56px; height: auto; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15)); }
         
-        #lightbox { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(249,247,242,0.98); display:none; justify-content:center; align-items:center; z-index:10000; }
-        #lightbox img { max-width: 92%; max-height: 85%; object-fit: contain; }
+        /* 燈箱優化：背景加深，支援捲動查看放大後的內容 */
+        #lightbox { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0, 0, 0, 0.95); 
+            display:none; justify-content:center; align-items:center; z-index:10000; 
+            overflow: auto; 
+            -webkit-overflow-scrolling: touch;
+        }
+        #lightbox img { 
+            max-width: 95%; 
+            max-height: 95%; 
+            object-fit: contain; 
+            transition: transform 0.2s ease;
+        }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; font-weight: bold; cursor: pointer; z-index: 10001;
+        }
         
         footer { padding: 20px 25px 120px; width: 100%; text-align: center; font-size: 21px !important; font-weight: 700; letter-spacing: 8px; color: var(--ink); }
     </style>
@@ -196,15 +206,15 @@
         <section class="reveal">
             <span class="section-title">電子訃聞 ‧ 詳情參閱</span>
             <img src="image/IMG_8361.jpeg" class="img-inner" style="max-width: 70%;" onclick="zoom(this.src)">
-            <p style="text-align:center; font-size:12px !important; color:var(--gold); margin-top:20px;">( 點擊圖片放大全文 )</p>
+            <p style="text-align:center; font-size:12px !important; color:var(--gold); margin-top:20px;">( 點擊圖片可放大查看 )</p>
         </section>
 
         <section class="reveal">
             <span class="section-title">會場位置與交通</span>
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
-                <img src="image/IMG_8370.jpeg" style="width:100%; max-width:300px;" onclick="zoom(this.src)">
+                <img src="image/IMG_8370.jpeg" style="width:100%; max-width:300px;" class="img-inner" onclick="zoom(this.src)">
             </div>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=宜蘭員山福園" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
+            <a href="https://maps.app.goo.gl/9h7V1VfXnL2qY6M19" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
         </section>
 
         <section class="reveal" style="text-align: center;">
@@ -254,20 +264,35 @@
     <a href="https://line.me/ti/p/nZJmE8-b6X"><img src="image/聯繫line.PNG"></a>
 </div>
 
-<div id="lightbox" onclick="this.style.display='none'"><img id="lbi"></div>
+<div id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lbi" onclick="event.stopPropagation()">
+</div>
 
 <script>
-    // 徹底阻擋縮放手勢
-    document.addEventListener('gesturestart', (e) => e.preventDefault());
+    // 智慧型鎖定邏輯
+    const lb = document.getElementById('lightbox');
+    const lbi = document.getElementById('lbi');
+
+    // 主畫面禁止縮放，但燈箱顯示時「不」阻止手勢，讓瀏覽器預設的縮放功能運作
+    document.addEventListener('gesturestart', (e) => {
+        if (lb.style.display !== 'flex') {
+            e.preventDefault();
+        }
+    });
+
     let lastT = 0;
     document.addEventListener('touchend', (e) => {
         const now = Date.now();
-        if (now - lastT <= 300) e.preventDefault();
+        if (lb.style.display !== 'flex') {
+            if (now - lastT <= 300) e.preventDefault(); // 阻擋主畫面雙擊縮放
+        }
         lastT = now;
     }, false);
 
     const mInfo = `☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n家奠禮：上午10：00\n公奠禮：上午10：50\n詳情參閱：https://24hour.台灣/Li-Guifa`;
 
+    // 捲動顯示特效
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
@@ -281,11 +306,24 @@
     }), {threshold: 0.1});
     document.querySelectorAll('section, .calligraphy-area').forEach(s => obs.observe(s));
 
+    // 背景音樂
     const bgm = document.getElementById('bgm');
     const startB = () => { if(bgm.paused){ bgm.volume=0.3; bgm.play().catch(()=>{}); } };
     ['click','touchstart'].forEach(ev => document.addEventListener(ev, startB, {once:true}));
 
-    function zoom(s) { document.getElementById('lbi').src = s; document.getElementById('lightbox').style.display = 'flex'; }
+    // 圖片放大功能：打開燈箱
+    function zoom(s) { 
+        lbi.src = s; 
+        lb.style.display = 'flex'; 
+        document.body.style.overflow = 'hidden'; // 鎖定背景不讓它亂捲
+    }
+    
+    // 關閉燈箱
+    function closeLightbox() {
+        lb.style.display = 'none';
+        document.body.style.overflow = 'auto'; // 恢復背景捲動
+    }
+
     function toggleF() { const g = document.getElementById('flowerG'); g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; }
     
     function copyText() {
