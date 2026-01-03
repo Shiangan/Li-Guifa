@@ -108,7 +108,6 @@
         .float-nav { position: fixed; bottom: 35px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
         .float-nav img { width: 56px; height: auto; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15)); }
         
-        /* 燈箱優化：背景加深，支援捲動查看放大後的內容 */
         #lightbox { 
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: rgba(0, 0, 0, 0.95); 
@@ -120,10 +119,9 @@
             max-width: 95%; 
             max-height: 95%; 
             object-fit: contain; 
-            transition: transform 0.2s ease;
         }
         .lightbox-close {
-            position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; font-weight: bold; cursor: pointer; z-index: 10001;
+            position: absolute; top: 20px; right: 20px; color: white; font-size: 35px; font-weight: bold; cursor: pointer; z-index: 10001;
         }
         
         footer { padding: 20px 25px 120px; width: 100%; text-align: center; font-size: 21px !important; font-weight: 700; letter-spacing: 8px; color: var(--ink); }
@@ -163,7 +161,7 @@
                     於 <span style="color: var(--ink); font-weight: 600;">115 年 01 月 01 日 (卯時)</span>，<br>
                     在家人們的陪伴與思念中，<br>
                     圓滿塵世旅程，安詳化作星辰。<br>
-                    留下的溫暖與教誨，將永遠照亮我們。<br><br>
+                    留下的溫慢與教誨，將永遠照亮我們。<br><br>
                     謹擇於<br>
                     <span style="color: var(--ink); font-weight: 600;">115 年 01 月 16 日 (星期五)</span>，<br>
                     於<span style="color: var(--ink); font-weight: 600;">宜蘭員山福園 ［ 801 ］禮廳</span><br>
@@ -214,7 +212,7 @@
             <div style="display: flex; justify-content: center; margin-bottom: 25px;">
                 <img src="image/IMG_8370.jpeg" style="width:100%; max-width:300px;" class="img-inner" onclick="zoom(this.src)">
             </div>
-            <a href="https://maps.app.goo.gl/9h7V1VfXnL2qY6M19" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭員山福園" target="_blank" class="btn-action" style="border-color:#eee; color:#888;">📍 開啟 Google 地圖導航</a>
         </section>
 
         <section class="reveal" style="text-align: center;">
@@ -265,34 +263,33 @@
 </div>
 
 <div id="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
+    <span class="lightbox-close">×</span>
     <img id="lbi" onclick="event.stopPropagation()">
 </div>
 
 <script>
-    // 智慧型鎖定邏輯
     const lb = document.getElementById('lightbox');
     const lbi = document.getElementById('lbi');
 
-    // 主畫面禁止縮放，但燈箱顯示時「不」阻止手勢，讓瀏覽器預設的縮放功能運作
+    // 縮放控制
     document.addEventListener('gesturestart', (e) => {
-        if (lb.style.display !== 'flex') {
-            e.preventDefault();
-        }
+        if (lb.style.display !== 'flex') e.preventDefault();
     });
 
     let lastT = 0;
     document.addEventListener('touchend', (e) => {
         const now = Date.now();
         if (lb.style.display !== 'flex') {
-            if (now - lastT <= 300) e.preventDefault(); // 阻擋主畫面雙擊縮放
+            if (now - lastT <= 300) e.preventDefault();
         }
         lastT = now;
     }, false);
 
-    const mInfo = `☘️【追思奠禮 ‧ 李貴發 先生】\n\n安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n家奠禮：上午10：00\n公奠禮：上午10：50\n詳情參閱：https://24hour.台灣/Li-Guifa`;
+    // 這裡定義分享的文字內容
+    const shareTitle = "☘️【追思奠禮 ‧ 李貴發 先生】";
+    const shareContent = `安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 801 ］禮廳\n家奠禮：上午10：00\n公奠禮：上午10：50\n詳情參閱：https://24hour.台灣/Li-Guifa`;
 
-    // 捲動顯示特效
+    // 交叉觀測器特效
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
@@ -306,33 +303,44 @@
     }), {threshold: 0.1});
     document.querySelectorAll('section, .calligraphy-area').forEach(s => obs.observe(s));
 
-    // 背景音樂
+    // 音樂控制
     const bgm = document.getElementById('bgm');
     const startB = () => { if(bgm.paused){ bgm.volume=0.3; bgm.play().catch(()=>{}); } };
     ['click','touchstart'].forEach(ev => document.addEventListener(ev, startB, {once:true}));
 
-    // 圖片放大功能：打開燈箱
     function zoom(s) { 
         lbi.src = s; 
         lb.style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; // 鎖定背景不讓它亂捲
+        document.body.style.overflow = 'hidden';
     }
     
-    // 關閉燈箱
     function closeLightbox() {
         lb.style.display = 'none';
-        document.body.style.overflow = 'auto'; // 恢復背景捲動
+        document.body.style.overflow = 'auto';
     }
 
     function toggleF() { const g = document.getElementById('flowerG'); g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; }
     
+    // 複製文字功能
     function copyText() {
-        const t = document.createElement("textarea"); t.value = mInfo; document.body.appendChild(t);
-        t.select(); document.execCommand('copy'); document.body.removeChild(t);
+        const fullText = shareTitle + "\n\n" + shareContent;
+        const t = document.createElement("textarea"); 
+        t.value = fullText; 
+        document.body.appendChild(t);
+        t.select(); 
+        document.execCommand('copy'); 
+        document.body.removeChild(t);
         alert("奠禮資訊已複製至剪貼簿");
     }
 
-    function shareLine() { window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(mInfo)}`; }
+    // 重點修正：LINE 分享功能
+    function shareLine() {
+        // 合併標題與內容
+        const fullMessage = shareTitle + "\n\n" + shareContent;
+        // 使用 encodeURIComponent 確保中文與特殊符號（如網址）被正確轉換
+        const lineUrl = "https://line.me/R/msg/text/?" + encodeURIComponent(fullMessage);
+        window.location.href = lineUrl;
+    }
 
     function addCal() { 
         window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('【追思】李貴發先生 奠禮')}&dates=20260116T100000/20260116T120000&location=${encodeURIComponent('宜蘭員山福園')}`); 
