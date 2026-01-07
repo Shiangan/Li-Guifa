@@ -28,14 +28,13 @@
             --ink: #1a1a1a;
             --gold: #b4977a;
             --sub-ink: #555555;
-            --max-w: 480px; /* 限制最大寬度，確保在大螢幕手機上不會橫向過寬 */
+            --max-w: 480px;
         }
 
         * { 
             box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
             margin: 0; padding: 0; 
-            /* 防止 iOS 橫屏時字體突然變大 */
             -webkit-text-size-adjust: 100%;
         }
 
@@ -48,11 +47,9 @@
             font-family: 'Noto Serif TC', serif; 
             line-height: 1.8;
             touch-action: pan-y;
-            /* 核心技術：除非標點或空格，否則中文字絕不隨機斷開 */
             word-break: keep-all;
         }
 
-        /* 核心保護層：防止關鍵文字（如姓名、地點）被拆散到兩行 */
         .u-block {
             display: inline-block;
             white-space: nowrap; 
@@ -68,7 +65,6 @@
             min-height: 100vh;
         }
 
-        /* 浮水印設計 */
         .bg-watermark { 
             position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); 
             font-size: 70px; font-weight: 300; color: rgba(180, 151, 122, 0.04); 
@@ -93,7 +89,6 @@
             font-weight: 900; letter-spacing: 0.25em; margin: 15px 0; 
         }
 
-        /* 動態進入效果 */
         section { 
             padding: 65px 22px; width: 100%; position: relative; z-index: 1; 
             opacity: 0; transform: translateY(20px); 
@@ -146,7 +141,6 @@
         .flower-name { font-size: 12px; font-weight: 600; }
         .flower-price { font-size: 11px; color: var(--gold); font-weight: 700; display: block; margin-top: 3px; }
 
-        /* 謝卡毛筆字動態區 */
         .calligraphy-area { padding: 100px 10px 150px; width: 100%; display: flex; justify-content: center; position: relative; z-index: 2; overflow: hidden; }
         .ink-wrap { display: flex; flex-direction: row-reverse; justify-content: center; align-items: flex-start; width: 95%; max-width: 420px; height: 620px; margin: 0 auto; }
         .ink-line { writing-mode: vertical-rl; font-family: 'ZF-Font', serif; font-size: 22px; letter-spacing: 6px; line-height: 2.1; opacity: 0; filter: blur(12px); white-space: nowrap; margin: 0 6px; }
@@ -163,7 +157,6 @@
         .float-nav { position: fixed; bottom: 35px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
         .float-nav img { width: 56px; height: auto; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15)); }
         
-        /* 燈箱：核心縮放機制 */
         #lightbox { 
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: rgba(0, 0, 0, 0.95); 
@@ -176,7 +169,8 @@
         footer { padding: 20px 25px 120px; width: 100%; text-align: center; font-size: 21px; font-weight: 700; letter-spacing: 8px; color: var(--ink); }
     </style>
 </head>
-<body oncontextmenu="return false"> <audio id="bgm" loop><source src="Misson Part 1.mp3" type="audio/mp3"></audio>
+<body oncontextmenu="return false"> 
+    <audio id="bgm" loop><source src="Misson Part 1.mp3" type="audio/mp3"></audio>
 
 <div class="app-wrapper">
     <div class="bg-watermark">MEMORY</div>
@@ -306,8 +300,7 @@
 
 <div class="float-nav">
     <a href="tel:0938179858"><img src="image/24小時專線.png"></a>
-    <a href="https://line.me/ti/p/nZJmE8-b6X">
-        <img src="image/聯繫line.PNG"></a>
+    <a href="https://line.me/ti/p/nZJmE8-b6X"><img src="image/聯繫line.PNG"></a>
 </div>
 
 <div id="lightbox" onclick="closeLightbox()">
@@ -319,16 +312,16 @@
     const lb = document.getElementById('lightbox');
     const lbi = document.getElementById('lbi');
 
-    // 禁用主頁面縮放，僅限燈箱開啟時允許兩指縮放
+    // 禁用主頁面縮放
     document.addEventListener('gesturestart', (e) => {
         if (lb.style.display !== 'flex') e.preventDefault();
     });
 
-    // 定義分享資訊（使用 Punycode 網址確保 LINE 預覽不失效）
+    // 定義分享資訊
     const mTitle = "☘️【追思奠禮 ‧ 李貴發 先生】";
     const mInfo = `安靈地點：宜蘭員山福園 停柩室［ 103 ］\n奠禮日期：115年01月16日(五)\n奠禮會場：宜蘭員山福園 ［ 803 ］禮廳\n家奠禮：上午09：00\n公奠禮：上午09：40\n詳情參閱：https://24hour.xn--kpry57d/Li-Guifa`;
 
-    // 滾動偵測：觸發區段顯現動畫與毛筆字動畫
+    // 滾動偵測動畫
     const obs = new IntersectionObserver(es => es.forEach(e => {
         if(e.isIntersecting) {
             e.target.classList.add('visible');
@@ -342,30 +335,30 @@
     }), {threshold: 0.1});
     document.querySelectorAll('section, .calligraphy-area').forEach(s => obs.observe(s));
 
-    // 背景音樂啟動邏輯（需使用者初次點擊）
+    // 背景音樂
     const bgm = document.getElementById('bgm');
     const startB = () => { if(bgm.paused){ bgm.volume=0.3; bgm.play().catch(()=>{}); } };
     ['click','touchstart'].forEach(ev => document.addEventListener(ev, startB, {once:true}));
 
-    // 圖片燈箱放大
+    // 燈箱功能
     function zoom(s) { 
         lbi.src = s; 
         lb.style.display = 'flex'; 
-        document.body.style.overflow = 'hidden'; // 禁止底層捲動
+        document.body.style.overflow = 'hidden'; 
     }
     
     function closeLightbox() {
         lb.style.display = 'none';
-        document.body.style.overflow = 'auto'; // 恢復底層捲動
+        document.body.style.overflow = 'auto'; 
     }
 
-    // 花禮清單切換
+    // 花禮清單
     function toggleF() { 
         const g = document.getElementById('flowerG'); 
         g.style.display = g.style.display === 'grid' ? 'none' : 'grid'; 
     }
     
-    // 複製文字至剪貼簿
+    // 複製文字
     function copyText() {
         const fullTxt = mTitle + "\n\n" + mInfo;
         const t = document.createElement("textarea"); 
@@ -377,7 +370,7 @@
         alert("奠禮資訊已複製至剪貼簿");
     }
 
-    // LINE 分享功能（關鍵修正：完全編碼處理）
+    // LINE 分享
     function shareLine() {
         const fullMsg = mTitle + "\n\n" + mInfo;
         window.location.href = `https://line.me/R/msg/text/?${encodeURIComponent(fullMsg)}`;
@@ -385,7 +378,8 @@
 
     // 加入行事曆
     function addCal() { 
-        const calUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('【追思】李貴發先生 奠禮')}&dates=20260116T100000/20260116T120000&location=${encodeURIComponent('宜蘭員山福園')}`;
+        // 台灣時區設定 2026/01/16 09:00 - 12:00 (UTC 01:00-04:00)
+        const calUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('【追思】李貴發先生 奠禮')}&dates=20260116T010000Z/20260116T040000Z&location=${encodeURIComponent('宜蘭員山福園')}`;
         window.open(calUrl); 
     }
 </script>
